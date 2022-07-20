@@ -8,9 +8,11 @@ import videoRouter from "./routers/videoRouter";
 const PORT = 4000;
 
 const app = express();
-const logger = morgan("dev");
-app.use(logger);
+const logger = morgan("s");
 
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");  // default는 cwd() + /views
+app.use(logger);
 
 app.use("/", globalRouter);
 app.use("/users", userRouter);
