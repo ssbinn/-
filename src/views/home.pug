@@ -1,4 +1,9 @@
 extends base.pug
+include mixins/video.pug
 
 block content 
-    h1 Home
+    h2 등반 영상, 지도 등을 둘러보세요
+    each v in videos
+        +video(v)
+    if !v
+        p Sorry nothing found. 
