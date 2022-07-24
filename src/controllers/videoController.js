@@ -15,14 +15,6 @@ const videos = [
         views: 59,
         id: 2,
     },
-    {
-        title: "Third Video",
-        rating: 5,
-        comments: 2,
-        createdAt: "2 minutes ago",
-        views: 59,
-        id: 3,
-    },
 ]
 
 export const preview = (req, res) => {
@@ -31,7 +23,17 @@ export const preview = (req, res) => {
 
 export const search = (req, res) => res.send("Search");
 
-export const upload = (req, res) => res.send("upload");
+export const upload = (req, res) => {
+    return res.render("upload", { pageTitle: "Upload" })
+}
+
+export const postUpload = (req, res) => {
+    const v = {};
+    v.title = req.body.uTitle;
+    videos.push(v);
+    console.log(videos)
+    return res.redirect("/");
+}
 
 export const watch = (req, res) => {
     const id = req.params.id;
