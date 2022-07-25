@@ -1,11 +1,12 @@
 import Video from "../models/Video"
 
-export const home = (req, res) => {
-    // search terms (비어있는 경우 모든 형식을 찾는다는 의미), callback
-    Video.find({}, (error, videos) => {
-        console.log("search finished");
+export const home = async (req, res) => {
+    try {
+        const videos = await Video.find({});
         return res.render("home", { pageTitle: "Home", videos: [] });
-    });
+    } catch (error) {
+        return res.render("server-error", { error });
+    }
 }
 
 export const search = (req, res) => res.send("Search");
