@@ -18,13 +18,15 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
     const { title, description, hashtags } = req.body;
+    console.log("첫 번째");
+
     try {
         await Video.create({
             title,
             description,
             hashtags,
         });
-
+        console.log("마지막");
         return res.redirect("/");  // 동영상 업로드 완료 시 -> 메인 페이지로 이동
     }
     catch (error) {
@@ -67,7 +69,9 @@ export const postEdit = async (req, res) => {
     }
 
     await Video.findByIdAndUpdate(id, {
-        title, description, hashtags: hashtags.split(",")
+        title,
+        description,
+        hashtags: hashtags.split(",")
             .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
     })
 
