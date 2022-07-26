@@ -20,9 +20,9 @@ export const postUpload = async (req, res) => {
     const { title, description, hashtags } = req.body;
     try {
         await Video.create({
-            title: title,
-            description: description,
-            hashtags: hashtags.split(",").map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
+            title,
+            description,
+            hashtags,
         });
 
         return res.redirect("/");  // 동영상 업로드 완료 시 -> 메인 페이지로 이동
