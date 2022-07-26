@@ -60,15 +60,17 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
     const { id } = req.params;
     const { title, description, hashtags } = req.body;
-    const video = await Video.findById(id);
+    const video = await Video.exists({ _id: id });  // MyModel.exists({ answer: 42 }) = MyModel.findOne({ answer: 42 }).select({ _id: 1 }).lean() 
 
     if (!video) {
         return res.render("404", { pageTitle: "video not found" });
     }
-    video.title = title;
-    video.description = description;
-    video.hashtags = hashtags.split(",").map((tag) => (tag.startsWith("#") ? tag : `#${tag}`));
-    await video.save();
+
+    await Video.findByIdAndUpdate(id, {
+        title, description, hashtags: hashtags.split(",")
+            .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
+    })
+
     return res.redirect(`/videos/${id}`);  // 동영상 수정 완료 시 -> 동영상 조회 페이지로 이동
 }
 
