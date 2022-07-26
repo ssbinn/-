@@ -12,12 +12,9 @@ const videoSchema = new mongoose.Schema({
 
 });
 
-videoSchema.pre('save', async function () {
-    console.log("두 번째");  // 코드 실행 흐름을 알기 위함
-    this.hashtags = this.hashtags[0]
-        .split(",")
-        .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`));  // ['t,a,g'] -> ['#t', '#a', '#g']
-});  // model 생성 전에 생성
+videoSchema.static('formatHashtags', function (hashtags) {
+    return hashtags.split(",").map((tag) => (tag.startsWith("#") ? tag : `#${tag}`))
+})
 
 const Video = mongoose.model("video", videoSchema);
 
