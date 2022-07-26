@@ -3,39 +3,40 @@ import Video from "../models/Video"
 export const home = async (req, res) => {
     try {
         const videos = await Video.find({});
-        console.log(videos)
         return res.render("home", { pageTitle: "Home", videos });
-    } catch (error) {
+    }
+    catch (error) {
         return res.render("server-error", { error });
     }
 }
 
 
 export const getUpload = (req, res) => {
-    return res.render("upload", { pageTitle: "Upload" })
+    return res.render("upload", { pageTitle: "Upload" });
 }
 
 
 export const postUpload = async (req, res) => {
     const { title, description, hashtags } = req.body;
-    const video = new Video({
-        title: title,
-        description: description,
-        createdAt: Date.now(),
-        hashtags: hashtags.split(",").map((tag) => `#${tag}`),
-        meta: {
-            rating: 0,
-            views: 0,
-        },
-    });
-    await video.save();  // save(): promise를 return한다 -> save 작업이 끝날 때까지 기다려야 한다
-    return res.redirect("/");
+    try {
+        await Video.create({
+            title: title,
+            description: description,
+            hashtags: hashtags.split(",").map((tag) => `#${tag}`),
+        });
+
+        return res.redirect("/");
+    }
+    catch (error) {
+        return res.render("upload", { pageTitle: "Upload", errMessage: error._message });
+    }
 }
 
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
     const id = req.params.id;
-    return res.render("watch", { pageTitle: `${video.title}` });
+    const video = await Video.findById(id);
+    return res.render("watch", { pageTitle: video.title, video: video });
 }
 
 

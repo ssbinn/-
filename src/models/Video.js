@@ -1,17 +1,15 @@
 import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    createdAt: Date,
-    hashtags: [{ type: String }],
+    title: { type: String, required: true, trim: true, maxLength: 50 },
+    description: { type: String, required: true, trim: true },
+    createdAt: { type: Date, default: Date.now, required: true },
+    hashtags: [{ type: String, trim: true }],
     meta: {
-        rating: Number,
-        views: Number,
+        rating: { type: Number, default: 0, required: true },
+        views: { type: Number, default: 0, required: true },
     },
 
-
-    // 뭐는 required, 뭐는 unique - 프라이머리 키이고 명시해주어야 하지 않나
 });
 
 const Video = mongoose.model("video", videoSchema);
