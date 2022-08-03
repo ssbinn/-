@@ -20,15 +20,16 @@ app.use(  // 브라우저에서 웹사이트를 방문할 때마다, 그 브라�
         saveUninitialized: true,  // 초기화되지 않은 세션을 저장소에 강제 저장 ?
     })
 );
-// app.use((req, res, next) => {
-//     console.log(req.headers);  // cookie 확인
-//     next();
-// });
 app.use((req, res, next) => {
     req.sessionStore.all((error, sessions) => {
         console.log(sessions);  // 서버가 기억하고 있는 세션을 볼 수 있음
         next();
     });
+});
+
+app.get("/add", (req, res, next) => {
+    req.session.climbing += 1;
+    return res.send(`${req.session.id}\n${req.session.climbing}`);
 });
 
 app.use("/", rootRouter);
