@@ -70,7 +70,10 @@ export const postLogin = async (req, res) => {
         });
     }
 
-    return res.end();
+    req.session.loggedIn = true;  // session.loggedIn 이 true이면 로그인한 것으로 인식
+    req.session.user = user;  // 유저 정보를 세션에 추가
+
+    return res.redirect("/");  // 로그인 시 -> 메인 페이지로 이동
 };
 
 

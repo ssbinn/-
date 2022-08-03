@@ -22,14 +22,9 @@ app.use(  // 브라우저에서 웹사이트를 방문할 때마다, 그 브라�
 );
 app.use((req, res, next) => {
     req.sessionStore.all((error, sessions) => {
-        console.log(sessions);  // 서버가 기억하고 있는 세션을 볼 수 있음
+        console.log(sessions);
         next();
     });
-});
-
-app.get("/add", (req, res, next) => {
-    req.session.climbing += 1;
-    return res.send(`${req.session.id}\n${req.session.climbing}`);
 });
 
 app.use("/", rootRouter);
