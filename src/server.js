@@ -21,13 +21,6 @@ app.use(  // session middleware, 웹사이트 방문 시 매번 그 브라우저
         saveUninitialized: true,
     })
 );
-app.use((req, res, next) => {
-    // console.log(res);  // res.locals object 발견
-    req.sessionStore.all((error, sessions) => {
-        console.log(sessions);
-        next();
-    });
-});
 app.use(localsMiddleware);
 
 app.use("/", rootRouter);

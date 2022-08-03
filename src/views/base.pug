@@ -13,10 +13,16 @@ html(lang="ko")
                         a(href="/search") Search
                     li 
                         a(href="/videos/upload") Upload Video
-                    li
-                        a(href="/login") Sign in
-                    li
-                        a(href="/signup") Sign up
+                    if loggedIn
+                        li 
+                            a(href="/profile") #{loggedInUser.username}
+                        li
+                            a(href="/logout") Sign out
+                    else
+                        li
+                            a(href="/login") Sign in
+                        li
+                            a(href="/signup") Sign up
             h1=pageTitle
         main
             block content
