@@ -82,7 +82,7 @@ export const postEdit = async (req, res) => {
 export const deleteVideo = async (req, res) => {
     const { id } = req.params;
     await Video.findByIdAndDelete(id);
-    return res.redirect("/");
+    return res.redirect("/");  // 동영상 삭제 시 -> 메인 페이지로 이동
 }
 
 export const search = async (req, res) => {

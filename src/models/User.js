@@ -10,9 +10,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function () {
-    console.log(this.password);
     this.password = await bcrypt.hash(this.password, 5);  // this -> create되는 User를 가리킴, saltRounds: 5번 해싱
-    console.log(this.password);
 });
 
 const User = mongoose.model("User", userSchema);
