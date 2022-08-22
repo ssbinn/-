@@ -3,8 +3,6 @@ include mixins/video.pug
 
 block content 
     h2 등반 영상, 지도 등을 둘러보세요
-    h4 
-        a(href="/videos/upload") upload &rarr;
     each v in videos
         +video(v)
     else
