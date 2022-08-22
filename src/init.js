@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "./db";  // db연결이 성공적일 때, model을 import하기 위해 제일 상단에 배치
 import "./models/Video"
 import "./models/User"

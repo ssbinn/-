@@ -17,10 +17,10 @@ app.use(express.urlencoded({ extended: true }));  // express app이 form의 valu
 
 app.use(  // session middleware, 웹사이트 방문 시 매번 그 브라우저를 위한 세션 id를 생성해 브라우저에게 보냄
     session({
-        secret: "hi",
-        resave: true,
-        saveUninitialized: true,
-        store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/songle" }),
+        secret: process.env.COOKIE_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     })
 );
 app.use(localsMiddleware);
