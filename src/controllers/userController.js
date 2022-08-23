@@ -77,7 +77,10 @@ export const postLogin = async (req, res) => {
 };
 
 
-export const logout = (req, res) => res.send("logout");
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/")
+}
 
 
 export const see = (req, res) => res.send("see");
