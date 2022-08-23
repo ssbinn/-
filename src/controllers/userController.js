@@ -77,6 +77,41 @@ export const postLogin = async (req, res) => {
 };
 
 
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", { pageTitle: "Edit Profile" });
+}
+
+
+export const postEdit = async (req, res) => {
+    // const id = req.session.user.id;
+    // const { name, email, username, location } = req.body; 
+    const {
+        session: {
+            user: { _id },
+        },
+        body: { name, email, username, location },
+    } = req;
+
+    const updatedUser = await User.findByIdAndUpdate(_id, {
+        name,
+        email,
+        username,
+        location
+    }, {new: true});  // new:true; findByIdAndUpdate로 부터 업데이트 된 데이터를 return 받기 위함 
+
+    req.session.user = updatedUser;  // 프론트는 session으로 부터 정보를 얻기 때문에 DB에서의 업데이트를 프론트에 반영시키기 위함
+    
+    /* 
+    이미 있는 username이나 email이면 업데이트 할 수 없게 만들기
+    username 또는 email을 변경하려 하는 지 확인 후
+    이미 있는 username 또는 email이라면 ? 의 처리
+
+    */
+    
+    return res.redirect("/users/edit");
+}
+
+
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/")
@@ -84,16 +119,6 @@ export const logout = (req, res) => {
 
 
 export const see = (req, res) => res.send("see");
-
-
-export const getEdit = (req, res) => {
-    return res.render("edit-profile", { pageTitle: "Edit Profile" });
-}
-
-
-export const postEdit = (req, res) => {
-    return res.render("edit-profile");
-}
 
 
 export const remove = (req, res) => res.send("Remove");
