@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "송글";
     res.locals.loggedIn = Boolean(req.session.loggedIn);  // 로그인 된 유저라면 true, 그렇지 않으면 false
@@ -25,3 +27,6 @@ export const publicOnlyMiddleware = (req, res, next) => {
         return res.redirect("/");
     }
 }
+
+
+export const uploadFiles = multer({ dest: 'uploads/' })

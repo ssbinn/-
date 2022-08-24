@@ -1,7 +1,9 @@
 extends base.pug
 
 block content
-    form(method="POST")
+    form(method="POST", enctype="multipart/form-data")
+        label(for="avatar") Avatar
+        input(type="file", id="avatar", name="avatar", accept="image/*")
         input(name="name", placeholder=loggedInUser.name, value=loggedInUser.name, type="text", required)
         input(name="email", placeholder=loggedInUser.email, value=loggedInUser.email, type="text", required)
         input(name="username", placeholder=loggedInUser.username, value=loggedInUser.username, type="text", required)
