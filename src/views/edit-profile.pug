@@ -3,6 +3,9 @@ extends base.pug
 block content
     form(method="POST")
         input(name="name", placeholder=loggedInUser.name, value=loggedInUser.name, type="text", required)
+        input(name="email", placeholder=loggedInUser.email, value=loggedInUser.email, type="text", required)
         input(name="username", placeholder=loggedInUser.username, value=loggedInUser.username, type="text", required)
         input(name="location", placeholder=loggedInUser.location, value=loggedInUser.location, type="text", required)
         input(type="submit", value="Update Profile")
+        hr
+        a(href="change-password") Change Password &rarr;

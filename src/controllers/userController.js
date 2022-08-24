@@ -97,17 +97,17 @@ export const postEdit = async (req, res) => {
         email,
         username,
         location
-    }, {new: true});  // new:true; findByIdAndUpdate로 부터 업데이트 된 데이터를 return 받기 위함 
+    }, { new: true });  // new:true; findByIdAndUpdate로 부터 업데이트 된 데이터를 return 받기 위함 
 
     req.session.user = updatedUser;  // 프론트는 session으로 부터 정보를 얻기 때문에 DB에서의 업데이트를 프론트에 반영시키기 위함
-    
+
     /* 
     이미 있는 username이나 email이면 업데이트 할 수 없게 만들기
     username 또는 email을 변경하려 하는 지 확인 후
-    이미 있는 username 또는 email이라면 ? 의 처리
+    이미 있는 username 또는 email이라면? 의 처리
 
     */
-    
+
     return res.redirect("/users/edit");
 }
 
@@ -118,7 +118,45 @@ export const logout = (req, res) => {
 }
 
 
+export const getChangePassword = (req, res) => {
+    return res.render("users/change-password", { pageTitle: "Change Password" });  // ~/src/views 에서 찾으므로 상대url 사용하는 점, redirect()와 다르게 파일 명인 점 주의
+}
+
+
+export const postChangePassword = async (req, res) => {
+    // 카카오톡 회원가입 유저일 경우(socialOnly === true), 비밀번호 변경 링크가 안보이게 하고 링크 이동하는 경우 막기
+
+    const {
+        session: {
+            user: { _id },
+        },
+        body: {
+            old, newPassword, newPassword2
+        },
+    } = req;
+
+    const user = await User.findById(_id);
+
+    const match = await bcrypt.compare(old, user.password);
+    if (!match) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "기존 비밀번호가 일치하지 않습니다."
+        });
+    }
+
+    if (newPassword !== newPassword2) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "새로운 비밀번호가 일치하지 않습니다."
+        });
+    }
+
+    user.password = newPassword;
+    await user.save();  // pre save middleware 작동시켜서 비밀번호를 hash 하기 위함
+
+    return res.redirect("/users/logout");  // 비밀번호 변경 시 로그아웃되고, 로그인 페이지로 이동
+}
+
+
 export const see = (req, res) => res.send("see");
-
-
-export const remove = (req, res) => res.send("Remove");
