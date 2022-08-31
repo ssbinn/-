@@ -9,7 +9,7 @@ userRouter
     .route("/edit")
     .all(loggedInOnlyMiddleware)
     .get(getEdit)
-    .post(uploadFiles.single("avatar"), postEdit);  // single: 파일 하나 업로드, "avatar": form의 name과 같아야 함
+    .post(uploadFiles.single("avatar"), postEdit);  // "avatar": form의 name과 같아야 함, request object에 file object 정보가 담김
 userRouter
     .route("/change-password")
     .all(loggedInOnlyMiddleware)

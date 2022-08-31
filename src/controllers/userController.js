@@ -83,24 +83,31 @@ export const getEdit = (req, res) => {
 
 
 export const postEdit = async (req, res) => {
-
+    // const path = req.file;
     const {
         session: {
-            user: { _id },
+            user: { _id, avatarUrl },
         },
         body: { name, email, username, location },
+        file,
     } = req;
 
-    console.log(req.file);
-
-    const updatedUser = await User.findByIdAndUpdate(_id, {
-        name,
-        email,
-        username,
-        location
-    }, { new: true });  // new:true; findByIdAndUpdate로 부터 업데이트 된 데이터를 return 받기 위함 
+    console.log(req.session.user.avataUrl)
+    console.log(file.path)
+    const updatedUser = await User.findByIdAndUpdate(_id,
+        {
+            avataUrl: file ? file.path : avatarUrl,
+            name,
+            email,
+            username,
+            location,
+        },
+        { new: true }
+    );  // new:true; findByIdAndUpdate로 부터 업데이트 된 데이터를 return 받기 위함 
 
     req.session.user = updatedUser;  // 프론트는 session으로 부터 정보를 얻기 때문에 DB에서의 업데이트를 프론트에 반영시키기 위함
+
+    console.log(req.session.user.avatarUrl)
 
     /* 
     이미 있는 username이나 email이면 업데이트 할 수 없게 만들기
